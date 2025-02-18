@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <title>Spartan Workout Tracker</title>
+  <style>
+    /* Spartan Warrior Theme & Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      padding: 20px;
+    }
+    header {
+      background: url("https://via.placeholder.com/1200x300?text=Spartan+Warrior+Banner") center/cover no-repeat;
+      color: #D4AF37;
+      padding: 40px 0;
+      text-align: center;
+      margin-bottom: 20px;
+      border: 3px solid #8B0000;
+    }
+    header h1 {
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px #000;
+    }
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    nav {
+      background: #8B0000;
+      padding: 10px 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    /* Main Tabs Navigation */
+    #mainTabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    #mainTabs button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      background: #8B0000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #mainTabs button.active {
+      background: #D4AF37;
+      color: #000;
+    }
+    /* Sections */
+    .section {
+      display: none;
+      padding: 20px;
+      border: 1px solid #8B0000;
+      border-radius: 5px;
+      background: #2b2b2b;
+      margin-bottom: 20px;
+    }
+    .section.active {
+      display: block;
+    }
+    h2 {
+      color: #D4AF37;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #D4AF37;
+      padding-bottom: 5px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: #333;
+    }
+    table, th, td {
+      border: 1px solid #8B0000;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    input, button, select {
+      padding: 8px;
+      margin: 5px;
+      font-size: 1em;
+      border: 1px solid #8B0000;
+      border-radius: 3px;
+    }
+    input, select {
+      background: #444;
+      color: #f0f0f0;
+    }
+    button {
+      background: #8B0000;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #a30000;
+    }
+    /* Day Tabs */
+    .day-tabs {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+    .day-tabs button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      background: #8B0000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .day-tabs button.active {
+      background: #D4AF37;
+      color: #000;
+    }
+    .day-form table input {
+      width: 80%;
+    }
+    /* Calendar */
+    #calendar {
+      margin: 15px 0;
+      text-align: center;
+    }
+    #calendarControls {
+      margin-bottom: 10px;
+    }
+    #calendarControls button {
+      margin: 0 5px;
+      background: #8B0000;
+      color: #fff;
+      border: 1px solid #D4AF37;
+      border-radius: 3px;
+    }
+    #calendarHeader {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    #calendar table {
+      margin: auto;
+      width: auto;
+      border: 1px solid #8B0000;
+    }
+    #calendar th, #calendar td {
+      padding: 5px;
+      border: 1px solid #8B0000;
+      text-align: center;
+      width: 30px;
+    }
+    #calendar td {
+      cursor: pointer;
+    }
+    #calendar td:hover {
+      background: #8B0000;
+      color: #fff;
+    }
+    /* Glossary */
+    .glossary-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #8B0000;
+      padding-bottom: 10px;
+    }
+    .glossary-item a {
+      color: #D4AF37;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    /* Global Timer */
+    #liveTimerSection {
+      margin: 20px 0;
+      padding: 10px;
+      border: 1px solid #8B0000;
+      border-radius: 5px;
+      text-align: center;
+      background: #333;
+    }
+    #liveTimerDisplay {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #D4AF37;
+    }
+    #liveTimerSection button {
+      margin: 5px;
+      background: #8B0000;
+      color: #fff;
+      border: 1px solid #D4AF37;
+      border-radius: 3px;
+    }
+    /* Records Section */
+    #recordsSection table {
+      background: #222;
+    }
+    #recordsSection th, #recordsSection td {
+      border: 1px solid #8B0000;
+      padding: 8px;
+      text-align: center;
+    }
+    #recordsSection h2 {
+      margin-bottom: 15px;
+      color: #D4AF37;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Beginner Level</h1>
+      <p>Embrace the Spartan Warrior spirit &ndash; train hard, fight harder!</p>
+    </header>
+
+    <!-- Main Tabs Navigation -->
+    <div id="mainTabs">
+      <button data-target="workoutSection" class="active">Workout Schedule</button>
+      <button data-target="progressSection">Progress Tracker</button>
+      <button data-target="glossarySection">Exercise Glossary</button>
+      <button data-target="progressionSection">Progression &amp; Recommendations</button>
+      <button data-target="recordsSection">Records</button>
+    </div>
+
+    <!-- Workout Schedule Section -->
+    <section id="workoutSection" class="section active">
+      <h2>Workout Schedule</h2>
+      <p>Each week&rsquo;s workouts vary to include all muscle groups &ndash; even smaller stabilizers &ndash; using bodyweight and weighted exercises.</p>
+      <ul>
+        <li><strong>Monday (Upper Body Pull):</strong> e.g., Pull&ndash;Ups, Dumbbell Rows, Face Pulls, Bicep Curls, Forearm Curls.</li>
+        <li><strong>Tuesday (Legs &amp; Lower Body):</strong> e.g., Hex Bar Deadlifts, Kettlebell Swings, Lunges, Calf &amp; Hamstring work.</li>
+        <li><strong>Wednesday (Upper Body Push):</strong> e.g., Bench Press variations, Shoulder Press, Triceps Dips, Rotator Cuff exercises.</li>
+        <li><strong>Thursday (Cardio):</strong> e.g., Running or timed sprints (max 5 miles).</li>
+        <li><strong>Friday (Legs, Core &amp; Glutes):</strong> e.g., Goblet Squats, Bulgarian Split Squats, Leg Extensions, Core Circuit, Glute Bridges.</li>
+        <li><strong>Saturday (Full-Body &amp; Bodyweight):</strong> e.g., Push&ndash;Ups, Squats, Jump Squats, Chin&ndash;Ups, Planks.</li>
+        <li><strong>Sunday (Active Recovery):</strong> Light cardio, stretching, and mobility work.</li>
+      </ul>
+    </section>
+
+    <!-- Progress Tracker Section -->
+    <section id="progressSection" class="section">
+      <h2>Progress Tracker</h2>
+      <p>Select a week, then click a date in the calendar. The table below is prefilled with your planned exercises (including recommended timer values, sets, and weight/distance). Use the timer buttons to start countdowns for exercise and rest.</p>
+      <!-- Week Selector -->
+      <div>
+        <label for="weekSelector"><strong>Select Week:</strong></label>
+        <select id="weekSelector">
+          <option value="Week 1" selected="selected">Week 1</option>
+          <option value="Week 2">Week 2</option>
+        </select>
+      </div>
+      <!-- Calendar Controls -->
+      <div id="calendarControls">
+        <button id="prevMonthBtn">Previous Month</button>
+        <span id="calendarHeader"></span>
+        <button id="nextMonthBtn">Next Month</button>
+      </div>
+      <!-- Embedded Calendar -->
+      <div id="calendar"></div>
+      <!-- Day Tabs -->
+      <div class="day-tabs">
+        <button data-day="Monday">Monday</button>
+        <button data-day="Tuesday">Tuesday</button>
+        <button data-day="Wednesday">Wednesday</button>
+        <button data-day="Thursday">Thursday</button>
+        <button data-day="Friday">Friday</button>
+        <button data-day="Saturday">Saturday</button>
+        <button data-day="Sunday">Sunday</button>
+      </div>
+      <!-- Day Log Form -->
+      <div id="dayForm" class="day-form">
+        <form id="dayLogForm">
+          <div>
+            <label for="dayDate"><strong>Date:</strong></label>
+            <input type="date" id="dayDate" required>
+          </div>
+          <table id="dayExercisesTable">
+            <thead>
+              <tr>
+                <th>Exercise</th>
+                <th>Reps</th>
+                <th>Weight / Distance</th>
+                <th>Exercise Timer (sec)</th>
+                <th>Rest Timer (sec)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows will be populated via JavaScript -->
+            </tbody>
+          </table>
+          <button type="submit">Save Day's Progress</button>
+        </form>
+      </div>
+      <!-- Global Timer Section -->
+      <div id="liveTimerSection">
+        <h3>Global Rest Timer</h3>
+        <div id="liveTimerDisplay">00:00</div>
+        <div>
+          <button id="startTimerBtn">Start</button>
+          <button id="pauseTimerBtn">Pause</button>
+          <button id="resetTimerBtn">Reset</button>
+        </div>
+        <div>
+          <button id="increaseTimeBtn">Increase (+10s)</button>
+          <button id="decreaseTimeBtn">Decrease (-10s)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exercise Glossary Section -->
+    <section id="glossarySection" class="section">
+      <h2>Exercise Glossary</h2>
+      <div id="glossaryContent">
+        <!-- Glossary items will be populated via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Progression & Recommendations Section -->
+    <section id="progressionSection" class="section">
+      <h2>Progression &amp; Recommendations</h2>
+      <p>Below are recommended starting values and progression guidelines. For example, if you currently run 2 miles in 22 minutes, aim to improve gradually toward your ACFT goals.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Starting Weight / Distance</th>
+            <th>Recommended Sets</th>
+            <th>Reps/Sets or Time</th>
+            <th>Recommended Rest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bench Press</td>
+            <td>60-80% of 1RM</td>
+            <td>3-4</td>
+            <td>8-10 reps</td>
+            <td>120 sec</td>
+          </tr>
+          <tr>
+            <td>Squats / Goblet Squats</td>
+            <td>Bodyweight or light</td>
+            <td>3-4</td>
+            <td>10-12 reps</td>
+            <td>90 sec</td>
+          </tr>
+          <tr>
+            <td>Deadlifts (Hex Bar)</td>
+            <td>50-70% of 1RM</td>
+            <td>3</td>
+            <td>8 reps</td>
+            <td>120 sec</td>
+          </tr>
+          <tr>
+            <td>2-Mile Run</td>
+            <td>&le;5 miles</td>
+            <td>N/A</td>
+            <td>Current: 22:00 min; Goal: 18:00 min</td>
+            <td>N/A</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Records Section -->
+    <section id="recordsSection" class="section">
+      <h2>Records</h2>
+      <p>Below are your best performance records based on saved workouts.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Record</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Sample records (to be integrated with a database in a real application) -->
+          <tr>
+            <td>Bench Press</td>
+            <td>200 lbs</td>
+            <td>2025-04-15</td>
+          </tr>
+          <tr>
+            <td>Squats</td>
+            <td>300 lbs</td>
+            <td>2025-04-20</td>
+          </tr>
+          <tr>
+            <td>2-Mile Run</td>
+            <td>22:00 min</td>
+            <td>2025-04-18</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <script>
+    // ----- Data Definitions -----
+    const weekExercises = {
+      "Week 1": {
+        "Monday": ["Pull‑Ups", "Dumbbell Rows", "Face Pulls", "Bicep Curls", "Forearm Curls"],
+        "Tuesday": ["Hex Bar Deadlifts", "Kettlebell Swings", "Lunges", "Hamstring Curls"],
+        "Wednesday": ["Bench Press", "Incline Dumbbell Press", "Shoulder Press", "Triceps Dips", "Lateral Raises", "Rotator Cuff Work"],
+        "Thursday": ["Run"],
+        "Friday": ["Goblet Squats", "Bulgarian Split Squats", "Leg Extensions", "Core Circuit", "Glute Bridges"],
+        "Saturday": ["Push‑Ups", "Squats", "Jump Squats", "Chin‑Ups", "Planks"],
+        "Sunday": ["Active Recovery"]
+      },
+      "Week 2": {
+        "Monday": ["Inverted Rows", "Single‑Arm Dumbbell Rows", "Face Pulls", "Hammer Curls", "Wrist Extensions"],
+        "Tuesday": ["Hex Bar Deadlifts", "Kettlebell Swings", "Step‑Ups", "Hamstring Curls"],
+        "Wednesday": ["Bench Press", "Decline Dumbbell Press", "Arnold Press", "Skull Crushers", "Lateral Raises", "Rotator Cuff"],
+        "Thursday": ["Run"],
+        "Friday": ["Goblet Squats", "Bulgarian Split Squats", "Bodyweight Squats", "Core Circuit", "Hip Thrusts"],
+        "Saturday": ["Push‑Ups", "Squats", "Jump Squats", "Chin‑Ups", "Planks"],
+        "Sunday": ["Active Recovery"]
+      }
+    };
+
+    const exerciseRecommendations = {
+      "Pull‑Ups": { time: "60", rest: "90" },
+      "Dumbbell Rows": { time: "60", rest: "90" },
+      "Face Pulls": { time: "", rest: "60" },
+      "Bicep Curls": { time: "", rest: "60" },
+      "Forearm Curls": { time: "", rest: "60" },
+      "Hex Bar Deadlifts": { time: "", rest: "120" },
+      "Kettlebell Swings": { time: "", rest: "90" },
+      "Lunges": { time: "", rest: "90" },
+      "Hamstring Curls": { time: "", rest: "90" },
+      "Bench Press": { time: "", rest: "120" },
+      "Incline Dumbbell Press": { time: "", rest: "90" },
+      "Shoulder Press": { time: "", rest: "90" },
+      "Triceps Dips": { time: "", rest: "90" },
+      "Lateral Raises": { time: "", rest: "60" },
+      "Rotator Cuff Work": { time: "", rest: "60" },
+      "Run": { time: "", rest: "" },
+      "Goblet Squats": { time: "", rest: "90" },
+      "Bulgarian Split Squats": { time: "", rest: "90" },
+      "Leg Extensions": { time: "", rest: "90" },
+      "Core Circuit": { time: "300", rest: "60" },
+      "Glute Bridges": { time: "", rest: "90" },
+      "Push‑Ups": { time: "", rest: "60" },
+      "Squats": { time: "", rest: "90" },
+      "Jump Squats": { time: "", rest: "90" },
+      "Chin‑Ups": { time: "", rest: "90" },
+      "Planks": { time: "60", rest: "60" },
+      "Active Recovery": { time: "", rest: "" },
+      "Inverted Rows": { time: "", rest: "90" },
+      "Single‑Arm Dumbbell Rows": { time: "", rest: "90" },
+      "Hammer Curls": { time: "", rest: "60" },
+      "Wrist Extensions": { time: "", rest: "60" },
+      "Step‑Ups": { time: "", rest: "90" },
+      "Decline Dumbbell Press": { time: "", rest: "90" },
+      "Arnold Press": { time: "", rest: "90" },
+      "Skull Crushers": { time: "", rest: "90" },
+      "Bodyweight Squats": { time: "", rest: "90" },
+      "Hip Thrusts": { time: "", rest: "90" }
+    };
+
+    const glossaryItems = [
+      {
+        name: "Pull‑Ups",
+        description: "A bodyweight exercise that targets the back and biceps.",
+        videoLink: "https://www.youtube.com/watch?v=H5JxLxjEgxY"
+      },
+      {
+        name: "Dumbbell Rows",
+        description: "An exercise targeting the upper back and biceps.",
+        videoLink: "https://www.youtube.com/watch?v=4J8tjJ_QbFE"
+      },
+      {
+        name: "Face Pulls",
+        description: "Targets the rear deltoids and upper back.",
+        videoLink: "https://www.youtube.com/watch?v=pYcpY20QaE8"
+      },
+      {
+        name: "Bicep Curls",
+        description: "A fundamental exercise for building bicep strength.",
+        videoLink: "https://www.youtube.com/watch?v=in7PaeYlhrM"
+      },
+      {
+        name: "Forearm Curls",
+        description: "Strengthens the forearms.",
+        videoLink: "https://www.youtube.com/watch?v=2qBjT5InbVo"
+      },
+      {
+        name: "Hex Bar Deadlifts",
+        description: "Targets the posterior chain using a hex bar.",
+        videoLink: "https://www.youtube.com/watch?v=NJ8CkzEONCE"
+      },
+      {
+        name: "Kettlebell Swings",
+        description: "A dynamic exercise emphasizing the posterior chain.",
+        videoLink: "https://www.youtube.com/watch?v=2z8JmcrW-As"
+      },
+      {
+        name: "Lunges",
+        description: "Strengthens legs and glutes.",
+        videoLink: "https://www.youtube.com/watch?v=QOVaHwm-Q6U"
+      },
+      {
+        name: "Hamstring Curls",
+        description: "Targets the hamstrings.",
+        videoLink: "https://www.youtube.com/watch?v=En-6cRQ1Uak"
+      },
+      {
+        name: "Bench Press",
+        description: "A compound exercise for the chest, shoulders, and triceps.",
+        videoLink: "https://www.youtube.com/watch?v=rT7DgCr-3pg"
+      },
+      {
+        name: "Incline Dumbbell Press",
+        description: "Targets the upper chest and front deltoids.",
+        videoLink: "https://www.youtube.com/watch?v=8iPEnn-ltC8"
+      },
+      {
+        name: "Shoulder Press",
+        description: "Builds shoulder strength.",
+        videoLink: "https://www.youtube.com/watch?v=qEwKCR5JCog"
+      },
+      {
+        name: "Triceps Dips",
+        description: "Targets the triceps.",
+        videoLink: "https://www.youtube.com/watch?v=6kALZikXxLc"
+      },
+      {
+        name: "Lateral Raises",
+        description: "Isolates the lateral deltoids.",
+        videoLink: "https://www.youtube.com/watch?v=3VcKaXpzqRo"
+      },
+      {
+        name: "Rotator Cuff Work",
+        description: "Strengthens the rotator cuff muscles.",
+        videoLink: "https://www.youtube.com/watch?v=vZK1a8QGr2I"
+      },
+      {
+        name: "Run",
+        description: "A cardio exercise with distance capped at 5 miles.",
+        videoLink: "https://www.youtube.com/watch?v=2pLT-olgUJs"
+      },
+      {
+        name: "Goblet Squats",
+        description: "A squat variation holding a weight at chest level.",
+        videoLink: "https://www.youtube.com/watch?v=MeIi2D0I7HQ"
+      },
+      {
+        name: "Bulgarian Split Squats",
+        description: "Targets the quads, glutes, and hamstrings unilaterally.",
+        videoLink: "https://www.youtube.com/watch?v=2C-uNgKwPLE"
+      },
+      {
+        name: "Leg Extensions",
+        description: "An isolation exercise for the quadriceps.",
+        videoLink: "https://www.youtube.com/watch?v=YyvSfVjQeL0"
+      },
+      {
+        name: "Core Circuit",
+        description: "A series of exercises to strengthen the core.",
+        videoLink: "https://www.youtube.com/watch?v=H1JvFJ8wOEw"
+      },
+      {
+        name: "Glute Bridges",
+        description: "Targets the glutes and hamstrings.",
+        videoLink: "https://www.youtube.com/watch?v=qwEhrI-mr9w"
+      },
+      {
+        name: "Push‑Ups",
+        description: "A bodyweight exercise for chest, shoulders, and triceps.",
+        videoLink: "https://www.youtube.com/watch?v=_l3ySVKYVJ8"
+      },
+      {
+        name: "Squats",
+        description: "A fundamental exercise for the lower body.",
+        videoLink: "https://www.youtube.com/watch?v=aclHkVaku9U"
+      },
+      {
+        name: "Jump Squats",
+        description: "A plyometric exercise for explosive leg power.",
+        videoLink: "https://www.youtube.com/watch?v=CVaEhXotL7M"
+      },
+      {
+        name: "Chin‑Ups",
+        description: "A bodyweight exercise for the back and biceps.",
+        videoLink: "https://www.youtube.com/watch?v=brhRXlOhsAM"
+      },
+      {
+        name: "Planks",
+        description: "An isometric core exercise.",
+        videoLink: "https://www.youtube.com/watch?v=pSHjTRCQxIw"
+      },
+      {
+        name: "Active Recovery",
+        description: "Light activity to aid recovery.",
+        videoLink: "https://www.youtube.com"
+      },
+      {
+        name: "Inverted Rows",
+        description: "A bodyweight exercise for the back.",
+        videoLink: "https://www.youtube.com/watch?v=G1ANmPHeC4M"
+      },
+      {
+        name: "Single‑Arm Dumbbell Rows",
+        description: "A unilateral exercise for back and biceps.",
+        videoLink: "https://www.youtube.com/watch?v=RoCr3BvW0G0"
+      },
+      {
+        name: "Hammer Curls",
+        description: "Targets the biceps and forearms.",
+        videoLink: "https://www.youtube.com/watch?v=zC3nLlEvin4"
+      },
+      {
+        name: "Wrist Extensions",
+        description: "Strengthens the forearms and wrists.",
+        videoLink: "https://www.youtube.com/watch?v=6JtP6BRU1OE"
+      },
+      {
+        name: "Step‑Ups",
+        description: "A unilateral exercise for legs and glutes.",
+        videoLink: "https://www.youtube.com/watch?v=YQ4b6agkYMI"
+      },
+      {
+        name: "Decline Dumbbell Press",
+        description: "Targets the lower chest and triceps.",
+        videoLink: "https://www.youtube.com/watch?v=5nWTRIuHymE"
+      },
+      {
+        name: "Arnold Press",
+        description: "A shoulder exercise with a rotational movement.",
+        videoLink: "https://www.youtube.com/watch?v=vj2w851ZHRM"
+      },
+      {
+        name: "Skull Crushers",
+        description: "An isolation exercise for the triceps.",
+        videoLink: "https://www.youtube.com/watch?v=d_KZxkY_0cM"
+      },
+      {
+        name: "Bodyweight Squats",
+        description: "A squat variation using bodyweight.",
+        videoLink: "https://www.youtube.com/watch?v=UXJrBgI2RxA"
+      },
+      {
+        name: "Hip Thrusts",
+        description: "Targets the glutes and hamstrings with emphasis on hip extension.",
+        videoLink: "https://www.youtube.com/watch?v=LM8XHLYJoYs"
+      }
+    ];
+
+    // ----- Global Variables -----
+    let currentWeek = "Week 1";
+    let currentDay = "Monday";
+
+    // ----- DOM References -----
+    const weekSelector = document.getElementById("weekSelector");
+    const dayTabs = document.querySelectorAll(".day-tabs button");
+    const dayExercisesTableBody = document.querySelector("#dayExercisesTable tbody");
+    const dayLogForm = document.getElementById("dayLogForm");
+    const liveTimerDisplay = document.getElementById("liveTimerDisplay");
+    const startTimerBtn = document.getElementById("startTimerBtn");
+    const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+    const resetTimerBtn = document.getElementById("resetTimerBtn");
+    const increaseTimeBtn = document.getElementById("increaseTimeBtn");
+    const decreaseTimeBtn = document.getElementById("decreaseTimeBtn");
+    const calendarDiv = document.getElementById("calendar");
+    const dayDateInput = document.getElementById("dayDate");
+    const prevMonthBtn = document.getElementById("prevMonthBtn");
+    const nextMonthBtn = document.getElementById("nextMonthBtn");
+    const calendarHeader = document.getElementById("calendarHeader");
+    const mainTabButtons = document.querySelectorAll("#mainTabs button");
+
+    // For calendar, show months January (0) to June (5)
+    let currentMonth = 0;
+    let fixedYear = new Date().getFullYear();
+
+    // ----- Utility Functions -----
+    function sanitizeString(str) {
+      return str.replace(/\s+/g, "-").replace(/[^\w\-]/g, "");
+    }
+
+    // ----- Tab Navigation -----
+    mainTabButtons.forEach(button => {
+      button.addEventListener("click", function() {
+        mainTabButtons.forEach(btn => btn.classList.remove("active"));
+        this.classList.add("active");
+        const targetId = this.getAttribute("data-target");
+        document.querySelectorAll(".section").forEach(section => section.classList.remove("active"));
+        document.getElementById(targetId).classList.add("active");
+      });
+    });
+
+    // ----- Glossary Population -----
+    function populateGlossary() {
+      const glossaryContent = document.getElementById("glossaryContent");
+      glossaryContent.innerHTML = "";
+      glossaryItems.forEach(item => {
+        const safeName = sanitizeString(item.name);
+        const div = document.createElement("div");
+        div.classList.add("glossary-item");
+        div.innerHTML = '<a href="' + item.videoLink + '" target="_blank" id="link-' + safeName + '" style="color:#D4AF37; text-decoration:none;">' + item.name + '</a>' +
+                        '<div><p>' + item.description + '</p></div>';
+        glossaryContent.appendChild(div);
+      });
+    }
+    populateGlossary();
+
+    // ----- Update Week Based on Date -----
+    function updateWeekBasedOnDate(selectedDate) {
+      const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+      const weekDiff = Math.floor((selectedDate - new Date("2025-01-06")) / msPerWeek);
+      currentWeek = (weekDiff % 2 === 0) ? "Week 1" : "Week 2";
+      weekSelector.value = currentWeek;
+    }
+
+    // ----- Render Day Form with Prefilled Data and Timer Buttons -----
+    function renderDayForm(day) {
+      // For "Run", use a distance input (max 5 miles)
+      dayExercisesTableBody.innerHTML = "";
+      let exercises = (weekExercises[currentWeek] && weekExercises[currentWeek][day]) || [];
+      // Randomize the exercise order
+      exercises = exercises.sort(() => 0.5 - Math.random());
+      exercises.forEach((exercise, index) => {
+        const rowIdx = index;
+        let weightInput = "";
+        if (exercise === "Run") {
+          weightInput = '<input type="number" name="distance" placeholder="e.g., 2.0" step="0.1" max="5" required />';
+        } else if (["Active Recovery", "Core Circuit", "Planks"].includes(exercise)) {
+          weightInput = '<input type="text" name="weight" placeholder="N/A" readonly />';
+        } else {
+          weightInput = '<input type="number" name="weight" placeholder="e.g., 135" required />';
+        }
+        const rec = exerciseRecommendations[exercise] || { time: "", rest: "" };
+        let timeInput = rec.time 
+          ? '<input type="number" name="time" placeholder="' + rec.time + '" value="' + rec.time + '" required />'
+          : '<input type="number" name="time" placeholder="e.g., 60" />';
+        let restInputHTML = rec.rest 
+          ? '<input type="number" class="rest-input" name="rest" placeholder="' + rec.rest + '" value="' + rec.rest + '" required />'
+          : '<input type="number" class="rest-input" name="rest" placeholder="e.g., 60" />';
+        // Embed timer buttons within the timer columns (no separate Action column)
+        let exerciseTimerHTML = ' <button type="button" class="start-exercise-btn" data-row="' + rowIdx + '">Start</button>' +
+                                ' <span class="exercise-timer-display" id="exercise-timer-' + rowIdx + '"></span>';
+        let restTimerHTML = ' <button type="button" class="start-rest-btn" data-row="' + rowIdx + '">Start</button>' +
+                            ' <span class="rest-timer-display" id="rest-timer-' + rowIdx + '"></span>';
+        const safeExercise = sanitizeString(exercise);
+        const exerciseLink = '<a href="#link-' + safeExercise + '" style="color:#D4AF37; text-decoration:none;">' + exercise + '</a>';
+        const row = document.createElement("tr");
+        row.innerHTML = '<td>' + exerciseLink + '</td>' +
+                        '<td><input type="number" name="reps" placeholder="e.g., 10" required /></td>' +
+                        '<td>' + weightInput + '</td>' +
+                        '<td>' + timeInput + exerciseTimerHTML + '</td>' +
+                        '<td>' + restInputHTML + restTimerHTML + '</td>';
+        dayExercisesTableBody.appendChild(row);
+      });
+      attachTimerEvents();
+    }
+
+    // ----- Attach Timer Events for Each Row -----
+    function attachTimerEvents() {
+      document.querySelectorAll(".start-exercise-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+          const rowIdx = this.getAttribute("data-row");
+          const row = this.closest("tr");
+          const timeInput = row.querySelector('input[name="time"]');
+          const displaySpan = row.querySelector("#exercise-timer-" + rowIdx);
+          const recommended = parseInt(timeInput.value, 10) || 60;
+          timeInput.disabled = true;
+          this.disabled = true;
+          let remaining = recommended;
+          let intervalId = setInterval(() => {
+            remaining--;
+            displaySpan.textContent = remaining + " sec";
+            if (remaining <= 0) {
+              clearInterval(intervalId);
+              displaySpan.textContent = "";
+              timeInput.disabled = false;
+              btn.disabled = false;
+            }
+          }, 1000);
+        });
+      });
+      document.querySelectorAll(".start-rest-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+          const rowIdx = this.getAttribute("data-row");
+          const row = this.closest("tr");
+          const restInput = row.querySelector('input[name="rest"]');
+          const displaySpan = row.querySelector("#rest-timer-" + rowIdx);
+          const recommended = parseInt(restInput.value, 10) || 60;
+          restInput.disabled = true;
+          this.disabled = true;
+          let remaining = recommended;
+          let intervalId = setInterval(() => {
+            remaining--;
+            displaySpan.textContent = remaining + " sec";
+            if (remaining <= 0) {
+              clearInterval(intervalId);
+              displaySpan.textContent = "";
+              restInput.disabled = false;
+              btn.disabled = false;
+              if (navigator.vibrate) {
+                navigator.vibrate(500);
+              }
+            }
+          }, 1000);
+        });
+      });
+    }
+
+    // ----- Set Active Day Tab and Render Form -----
+    function setActiveDay(dayName) {
+      dayTabs.forEach(btn => btn.classList.remove("active"));
+      const btn = document.querySelector('.day-tabs button[data-day="' + dayName + '"]');
+      if (btn) { btn.classList.add("active"); }
+      currentDay = dayName;
+      renderDayForm(currentDay);
+    }
+    dayTabs.forEach(button => {
+      button.addEventListener("click", function() {
+        setActiveDay(this.getAttribute("data-day"));
+      });
+    });
+    weekSelector.addEventListener("change", function() {
+      currentWeek = this.value;
+      renderDayForm(currentDay);
+    });
+
+    // ----- Embedded Calendar Generator (January to June) -----
+    function generateCalendar() {
+      calendarDiv.innerHTML = "";
+      const year = fixedYear;
+      const table = document.createElement("table");
+      const headerRow = document.createElement("tr");
+      ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+        const th = document.createElement("th");
+        th.textContent = day;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+      const firstDay = new Date(year, currentMonth, 1).getDay();
+      const daysInMonth = new Date(year, currentMonth + 1, 0).getDate();
+      let dateCounter = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement("td");
+          if (i === 0 && j < firstDay) {
+            cell.textContent = "";
+          } else if (dateCounter > daysInMonth) {
+            cell.textContent = "";
+          } else {
+            cell.textContent = dateCounter;
+            cell.style.cursor = "pointer";
+            cell.addEventListener("click", function() {
+              let selectedDate = new Date(year, currentMonth, parseInt(this.textContent, 10));
+              let formattedDate = selectedDate.toISOString().split("T")[0];
+              dayDateInput.value = formattedDate;
+              updateWeekBasedOnDate(selectedDate);
+              const dayName = selectedDate.toLocaleDateString("en-US", { weekday: "long" });
+              setActiveDay(dayName);
+            });
+            dateCounter++;
+          }
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+        if (dateCounter > daysInMonth) break;
+      }
+      calendarDiv.appendChild(table);
+      const monthNames = ["January", "February", "March", "April", "May", "June"];
+      calendarHeader.textContent = monthNames[currentMonth] + " " + year;
+    }
+    generateCalendar();
+
+    prevMonthBtn.addEventListener("click", function() {
+      if (currentMonth > 0) {
+        currentMonth--;
+        generateCalendar();
+      }
+    });
+    nextMonthBtn.addEventListener("click", function() {
+      if (currentMonth < 5) {
+        currentMonth++;
+        generateCalendar();
+      }
+    });
+
+    // ----- Save Day's Progress -----
+    dayLogForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const dayDate = dayDateInput.value;
+      const rows = dayExercisesTableBody.querySelectorAll("tr");
+      rows.forEach(function(row) {
+        const exercise = row.cells[0].textContent;
+        const reps = row.querySelector('input[name="reps"]').value;
+        let weightOrDistance = "";
+        if (exercise === "Run") {
+          weightOrDistance = row.querySelector('input[name="distance"]').value;
+        } else {
+          weightOrDistance = row.querySelector('input[name="weight"]').value;
+        }
+        const time = row.querySelector('input[name="time"]').value;
+        const rest = row.querySelector('input[name="rest"]').value;
+        console.log("Saved:", dayDate, currentWeek, currentDay, exercise, reps, weightOrDistance, time, rest);
+      });
+      dayLogForm.reset();
+      renderDayForm(currentDay);
+      alert("Progress saved for " + currentDay + " of " + currentWeek + "!");
+    });
+
+    // ----- Global Live Timer Functions -----
+    let globalTimerValue = defaultRestTime;
+    let globalTimerInterval;
+    let isGlobalTimerRunning = false;
+    function updateGlobalTimerDisplay() {
+      let minutes = Math.floor(globalTimerValue / 60);
+      let seconds = globalTimerValue % 60;
+      liveTimerDisplay.textContent =
+        (minutes < 10 ? "0" + minutes : minutes) + ":" +
+        (seconds < 10 ? "0" + seconds : seconds);
+    }
+    function startGlobalTimer() {
+      if (!isGlobalTimerRunning) {
+        isGlobalTimerRunning = true;
+        globalTimerInterval = setInterval(() => {
+          globalTimerValue--;
+          if (globalTimerValue <= 0) {
+            if (navigator.vibrate) { navigator.vibrate(500); }
+            globalTimerValue = defaultRestTime;
+          }
+          updateGlobalTimerDisplay();
+        }, 1000);
+      }
+    }
+    function pauseGlobalTimer() {
+      isGlobalTimerRunning = false;
+      clearInterval(globalTimerInterval);
+    }
+    function resetGlobalTimer() {
+      pauseGlobalTimer();
+      globalTimerValue = defaultRestTime;
+      updateGlobalTimerDisplay();
+    }
+    function increaseGlobalTimer() {
+      globalTimerValue += 10;
+      updateGlobalTimerDisplay();
+    }
+    function decreaseGlobalTimer() {
+      globalTimerValue = Math.max(0, globalTimerValue - 10);
+      updateGlobalTimerDisplay();
+    }
+    startTimerBtn.addEventListener("click", startGlobalTimer);
+    pauseTimerBtn.addEventListener("click", pauseGlobalTimer);
+    resetTimerBtn.addEventListener("click", resetGlobalTimer);
+    increaseTimeBtn.addEventListener("click", increaseGlobalTimer);
+    decreaseTimeBtn.addEventListener("click", decreaseGlobalTimer);
+    updateGlobalTimerDisplay();
+
+    // ----- Records Section -----
+    function populateRecords() {
+      const recordsSection = document.getElementById("recordsSection");
+      recordsSection.innerHTML = `
+        <h2>Records</h2>
+        <p>Below are your best performance records.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Exercise</th>
+              <th>Record</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bench Press</td>
+              <td>200 lbs</td>
+              <td>2025-04-15</td>
+            </tr>
+            <tr>
+              <td>Squats</td>
+              <td>300 lbs</td>
+              <td>2025-04-20</td>
+            </tr>
+            <tr>
+              <td>2-Mile Run</td>
+              <td>22:00 min</td>
+              <td>2025-04-18</td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    }
+    document.querySelector('button[data-target="recordsSection"]').addEventListener("click", populateRecords);
+  </script>
+</body>
+</html>
